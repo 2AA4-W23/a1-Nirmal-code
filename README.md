@@ -1,7 +1,7 @@
 # A1 - Piraten Karpen
 
-  * Author: < You name here >
-  * Email: < Your email here >
+  * Author: Nirmal Chaudhari
+  * Email: chaudn12@mcmaster.ca, nirmal.chaudhari2003@gmail.com
 
 ## Build and Execution
 
@@ -25,15 +25,15 @@ Remark: **We are assuming here you are using a _real_ shell (e.g., anything but 
  * Definition of Done (DoD):
    * < Your DoD goes here >
 
-### Backlog 
+### Backlog
 
 | MVP? | Id  | Feature  | Status  |  Started  | Delivered |
 | :-:  |:-:  |---       | :-:     | :-:       | :-:       |
 | x   | F01 | Roll a dice |  S | 01/01/23 |  |
-| x   | F02 | Roll eight dices  |  B (F01) |   |
-| x   | F03 | Select how many games as command-line arg.  |  P  |   |
-| x   | F04 | end of game with three cranes | P | |
-| x   | F05 | Player keeping random dice at their turn | B (F02) | | 
-| x   | F06 | Score points: 3-of-a-kind | B (F04) | | 
+| x   | F02 | Play 42 games during a simulation  |  P  |   |
+| x   | F03 | end of game with three cranes | P | |
+| x   | F04 | Player keeping random dice at their turn | P | | 
+| x   | F05 | Score points: count number of gold coins and diamonds, and multiply by 100. | B (F04) | |
+| x   | F06 | Output percentage of wins for the 2 players  |  P  |   |
 | ... | ... | ... |
 
