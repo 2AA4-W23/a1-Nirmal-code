@@ -28,7 +28,10 @@ public class Player {
             Random rand=new Random();
             while (8-starter_roll.size()<3){
                 for (int i=0; i<starter_roll.size();i++){
-
+                    int reroll=rand.nextInt(0,2);
+                    if (reroll==1){
+                        starter_roll.set(i,myDice.roll());
+                    }
                 }
                 starter_roll.removeAll(Collections.singleton(Faces.SKULL));
             }
