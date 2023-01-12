@@ -29,11 +29,13 @@ Remark: **We are assuming here you are using a _real_ shell (e.g., anything but 
 
 | MVP? | Id  | Feature  | Status  |  Started  | Delivered |
 | :-:  |:-:  |---       | :-:     | :-:       | :-:       |
-| x   | F01 | Roll a dice |  S | 01/01/23 |  |
-| x   | F02 | Play 42 games during a simulation  |  P  |   |
-| x   | F03 | end of game with three cranes | P | |
-| x   | F04 | Player keeping random dice at their turn | P | | 
-| x   | F05 | Score points: count number of gold coins and diamonds, and multiply by 100. | B (F04) | |
-| x   | F06 | Output percentage of wins for the 2 players  |  P  |   |
+| x   | F01 | Roll a dice |  D | 01/01/23 | 01/09/23 |
+| x   | F02 | Roll 8 dies |  S | 01/10/23 |  |
+| x   | F03 | Score points: count number of gold coins and diamonds, and multiply by 100. | B(F02) | |
+| x   | F04 | 2 Players | B(F08) | |
+| x   | F05 | Player keeping random dice at their turn | B(F02) | |
+| x   | F06 | Play 42 games during a simulation  |  B(F04)  |   |
+| x   | F07 | Output percentage of wins for the 2 players  |  B(F06)  |   |
+| x   | F08 | end of game with three cranes | B(F05) | |
 | ... | ... | ... |
 
