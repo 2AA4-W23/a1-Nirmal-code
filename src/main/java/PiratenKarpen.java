@@ -41,6 +41,7 @@ public class PiratenKarpen {
         System.out.printf("Player 2 score: %.3f%%", (p2_wins/42)*100);
 
 
+
     }
     
 }
