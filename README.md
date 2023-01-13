@@ -23,7 +23,9 @@ Remark: **We are assuming here you are using a _real_ shell (e.g., anything but 
  * Status: 
    * Pending (P), Started (S), Blocked (B), Done (D)
  * Definition of Done (DoD):
-   * < Your DoD goes here >
+   * Fully functional feature that is able to accurately and efficiently interact with other features/codes. 
+   * Feature code has meaningful naming convention that describes exactly what it is used for in the absence of comments.
+   * Feature code has no warning errors. 
 
 ### Backlog
 
@@ -34,7 +36,7 @@ Remark: **We are assuming here you are using a _real_ shell (e.g., anything but 
 | x   | F03 | Score points: count number of gold coins and diamonds, and multiply by 100. | D | 01/12/23 | 01/12/23 |
 | x   | F04 | 2 Players | D | 01/12/23 | 01/12/23 |
 | x   | F05 | Player keeping random dice at their turn | D | 01/12/23 | 01/12/23 |
-| x   | F06 | Play 42 games during a simulation  |  D  | 01/12/23  |
+| x   | F06 | Play 42 games during a simulation  |  D  | 01/12/23  | 01/12/23 |
 | x   | F07 | Output percentage of wins for the 2 players  |  D  | 01/12/23  | 01/12/23 |
 | x   | F08 | end of game with three cranes | D | 01/12/23 | 01/12/23 |
 | ... | ... | ... |
