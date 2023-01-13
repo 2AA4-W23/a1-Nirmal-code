@@ -13,7 +13,12 @@ public class Player {
     public int tally_score(List<Faces> final_rolls){
         int num_gold= Collections.frequency(final_rolls, Faces.GOLD);
         int num_diamond= Collections.frequency(final_rolls, Faces.DIAMOND);
-        int score=(num_gold+num_diamond)*100;
+        int num_monkey= Collections.frequency(final_rolls, Faces.MONKEY);
+        int num_parrot= Collections.frequency(final_rolls, Faces.PARROT);
+        int num_saber= Collections.frequency(final_rolls, Faces.SABER);
+
+        int score=((num_gold+num_diamond)*100)+(num_gold/3)*100+(num_diamond/3)*100+(num_monkey/3)*100+(num_parrot/3)*100+(num_saber/3)*100;
+
         return score;
     }
 
@@ -22,7 +27,6 @@ public class Player {
         Dice myDice=new Dice();
         starter_roll.removeAll(Collections.singleton(Faces.SKULL));
         if (8-starter_roll.size()>=3){
-            System.out.println(starter_roll.toString());
             return tally_score(starter_roll);
         }else{
             Random rand=new Random();
@@ -35,7 +39,6 @@ public class Player {
                 }
                 starter_roll.removeAll(Collections.singleton(Faces.SKULL));
             }
-            System.out.println(starter_roll.toString());
             return tally_score(starter_roll);
         }
 
