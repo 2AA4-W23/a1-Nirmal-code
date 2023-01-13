@@ -39,5 +39,5 @@ Remark: **We are assuming here you are using a _real_ shell (e.g., anything but 
 | x   | F06 | Play 42 games during a simulation  |  D  | 01/12/23  | 01/12/23 |
 | x   | F07 | Output percentage of wins for the 2 players  |  D  | 01/12/23  | 01/12/23 |
 | x   | F08 | end of game with three cranes | D | 01/12/23 | 01/12/23 |
+| x   | F09 | Score points: pairs of 3 dies | D | 01/12/23 | 01/13/23 |
 | ... | ... | ... |
-
