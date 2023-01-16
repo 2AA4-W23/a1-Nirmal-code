@@ -30,15 +30,24 @@ public class Player {
             return tally_score(starter_roll);
         }else{
             Random rand=new Random();
+            int fixed_one=rand.nextInt(0,starter_roll.size());
+            int fixed_two=rand.nextInt(0,starter_roll.size());
             while (8-starter_roll.size()<3){
                 for (int i=0; i<starter_roll.size();i++){
-                    int reroll=rand.nextInt(0,2);
-                    if (reroll==1){
-                        starter_roll.set(i,myDice.roll());
+                    if (i==fixed_one){
+                        starter_roll.set(i, myDice.roll());
+                    }else if (i==fixed_two){
+                        starter_roll.set(i, myDice.roll());
+                    }else{
+                        int reroll=rand.nextInt(0,2);
+                        if (reroll==1) {
+                            starter_roll.set(i, myDice.roll());
+                        }
                     }
                 }
                 starter_roll.removeAll(Collections.singleton(Faces.SKULL));
             }
+
             return tally_score(starter_roll);
         }
 
