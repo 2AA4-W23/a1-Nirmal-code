@@ -1,5 +1,6 @@
 package pk;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 
@@ -29,13 +30,44 @@ public class Player {
     }
 
     int tally_score(){
+
         int num_gold= Collections.frequency(rolls, Faces.GOLD);
         int num_diamond= Collections.frequency(rolls, Faces.DIAMOND);
         int num_monkey= Collections.frequency(rolls, Faces.MONKEY);
         int num_parrot= Collections.frequency(rolls, Faces.PARROT);
         int num_saber= Collections.frequency(rolls, Faces.SABER);
 
-        score=((num_gold+num_diamond)*100)+(num_gold/3)*100+(num_diamond/3)*100+(num_monkey/3)*100+(num_parrot/3)*100+(num_saber/3)*100;
+        List <Integer> num_dice=new ArrayList<>();
+        num_dice.add(num_gold);
+        num_dice.add(num_diamond);
+        num_dice.add(num_monkey);
+        num_dice.add(num_parrot);
+        num_dice.add(num_saber);
+
+        score=((num_gold+num_diamond)*100);
+
+        for (int i:num_dice){
+            switch(i){
+                case 3:
+                    score+=100;
+                    break;
+                case 4:
+                    score+=200;
+                    break;
+                case 5:
+                    score+=500;
+                    break;
+                case 6:
+                    score+=1000;
+                    break;
+                case 7:
+                    score+=2000;
+                    break;
+                case 8:
+                    score+=4000;
+                    break;
+            }
+        }
 
         logger.trace("result: "+rolls.toString());
         logger.trace(String.format("Added points:%d", score));
