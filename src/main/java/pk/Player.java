@@ -19,6 +19,18 @@ public class Player {
     public double wins;
     public int score;
 
+
+    int[] num_dice=new int[5];
+
+
+    Random rand = new Random();
+
+
+
+
+
+    
+
     private static Logger logger=LogManager.getLogger(Player.class);
 
 
@@ -29,54 +41,69 @@ public class Player {
         score=0;
     }
 
-    int tally_score(){
-
+    void dice_frequency(){
         int num_gold= Collections.frequency(rolls, Faces.GOLD);
         int num_diamond= Collections.frequency(rolls, Faces.DIAMOND);
         int num_monkey= Collections.frequency(rolls, Faces.MONKEY);
         int num_parrot= Collections.frequency(rolls, Faces.PARROT);
         int num_saber= Collections.frequency(rolls, Faces.SABER);
 
-        List <Integer> num_dice=new ArrayList<>();
-        num_dice.add(num_gold);
-        num_dice.add(num_diamond);
-        num_dice.add(num_monkey);
-        num_dice.add(num_parrot);
-        num_dice.add(num_saber);
+        num_dice[0]=num_gold;
+        num_dice[1]=num_diamond;
+        num_dice[2]=num_monkey;
+        num_dice[3]=num_parrot;
+        num_dice[4]=num_saber;
 
-        score=((num_gold+num_diamond)*100);
 
-        for (int i:num_dice){
-            switch(i){
+
+    }
+
+    int tally_score(){
+
+        dice_frequency();
+        int curr_score=0;
+
+        curr_score=((num_dice[0]+num_dice[1])*100);
+
+
+        for (int i=0; i<num_dice.length; i++){
+            switch(num_dice[i]){
                 case 3:
-                    score+=100;
+                    curr_score+=100;
                     break;
                 case 4:
-                    score+=200;
+                    curr_score+=200;
                     break;
                 case 5:
-                    score+=500;
+                    curr_score+=500;
                     break;
                 case 6:
-                    score+=1000;
+                    curr_score+=1000;
                     break;
                 case 7:
-                    score+=2000;
+                    curr_score+=2000;
                     break;
                 case 8:
-                    score+=4000;
+                    curr_score+=4000;
                     break;
             }
         }
 
         logger.trace("result: "+rolls.toString());
-        logger.trace(String.format("Added points:%d", score));
+        logger.trace(String.format("Added points:%d", curr_score));
 
-        return score;
+        return curr_score;
     }
 
-    void rerolls() {
-        Random rand = new Random();
+    void strat_rerolls(){
+        dice_frequency();
+
+
+
+    }
+
+    int random_rerolls() {
+
 
         //selects which two die will be rerolled from die left (at minimum).
         int fixed_one = rand.nextInt(0, rolls.size());
@@ -84,9 +111,13 @@ public class Player {
         do{
             fixed_two = rand.nextInt(0, rolls.size());
         }while (fixed_two!=fixed_one);
+        
+        boolean cont=rand.nextBoolean();
 
+        logger.trace("Player decides to reroll:"+cont);
+        
         //condition: true while there are less than 3 dies removed.
-        while (8 - rolls.size() < 3) {
+        while (cont) {
 
 
             for (int i = 0; i < rolls.size(); i++) {
@@ -107,7 +138,17 @@ public class Player {
 
             logger.trace("reroll:"+rolls.toString());
             rolls.removeAll(Collections.singleton(Faces.SKULL));
+
+            if (8-rolls.size()>=3){
+                logger.trace("No points, more than 3 skulls. ");
+                return 0;
+            }
+
+            cont=rand.nextBoolean();
+            logger.trace("Player decides to reroll? "+cont);
+
         }
+        return tally_score();
     }
 
     public int turn(){
@@ -119,15 +160,16 @@ public class Player {
 
         rolls.removeAll(Collections.singleton(Faces.SKULL));
 
+        int curr_score=0;
+
         //checks if 3 die or more are not already skulls.
         if (8-rolls.size()>=3){
-            tally_score();
-            return score;
+            logger.trace("No points, more than 3 skulls. ");
+            return 0;
         }else{
             //if less than 3 are skulls, this rerolls.
-            rerolls();
-            tally_score();
-            return score;
+            curr_score=random_rerolls();
+            return curr_score;
         }
 
     }
