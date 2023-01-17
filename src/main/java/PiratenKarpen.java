@@ -1,9 +1,15 @@
 
 import pk.Player;
 
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 
 public class PiratenKarpen {
+
+    private static Logger logger=LogManager.getLogger(PiratenKarpen.class);
+
+
 
     public static void main(String[] args) {
         System.out.println("Welcome to Piraten Karpen Simulator!");
@@ -16,20 +22,32 @@ public class PiratenKarpen {
 
         for (int i=0; i<42; i++) {
 
-            p1.score+= p1.turn();
-            p2.score+= p2.turn();
+            logger.trace(String.format("Round %d:", i+1));
 
-            System.out.printf("Player 1: %d \n", p1.score);
-            System.out.printf("Player 2: %d \n", p2.score);
+
+            logger.trace("Player 1 Turn:");
+            p1.score+= p1.turn();
+            logger.trace("Player 1 turn ended.");
+
+
+            logger.trace("Player 2 Turn:");
+            p2.score+= p2.turn();
+            logger.trace("Player 2 turn ended.");
+
+
+
+            logger.trace(String.format("Player 1: %d", p1.score));
+            logger.trace(String.format("Player 2: %d", p2.score));
 
             Player.win_update(p1,p2);
 
-
         }
 
+        logger.trace(String.format("Final Wins: Player 1: %.0f, Player 2: %.0f", p1.wins,p2.wins));
 
-        System.out.printf("Player 1 wins: %.0f ; score: %d ; win_percentage: %.3f%%\n", p1.wins, p1.score, (p1.wins/42)*100);
-        System.out.printf("Player 2 wins: %.0f ; score: %d ; win_percentage: %.3f%%\n", p2.wins, p2.score, (p2.wins/42)*100);
+
+        System.out.printf("Player 1 win percentage: %.3f%%\n",(p1.wins/42)*100);
+        System.out.printf("Player 2 win percentage: %.3f%%\n", (p2.wins/42)*100);
 
 
 

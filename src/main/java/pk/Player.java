@@ -5,14 +5,21 @@ import java.util.Random;
 
 import java.util.List;
 
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+
 
 public class Player {
+
 
     Dice myDice=new Dice();
 
     List <Faces> rolls;
     public double wins;
     public int score;
+
+    private static Logger logger=LogManager.getLogger(Player.class);
+
 
 
 
@@ -30,6 +37,9 @@ public class Player {
 
         score=((num_gold+num_diamond)*100)+(num_gold/3)*100+(num_diamond/3)*100+(num_monkey/3)*100+(num_parrot/3)*100+(num_saber/3)*100;
 
+        logger.trace("result: "+rolls.toString());
+        logger.trace(String.format("Added points:%d", score));
+
         return score;
     }
 
@@ -46,6 +56,7 @@ public class Player {
         //condition: true while there are less than 3 dies removed.
         while (8 - rolls.size() < 3) {
 
+
             for (int i = 0; i < rolls.size(); i++) {
 
                 if (i == fixed_one) {
@@ -61,6 +72,8 @@ public class Player {
                     }
                 }
             }
+
+            logger.trace("reroll:"+rolls.toString());
             rolls.removeAll(Collections.singleton(Faces.SKULL));
         }
     }
@@ -69,6 +82,8 @@ public class Player {
 
         //new roll each turn
         rolls =myDice.eightRoll();
+
+        logger.trace("Player rolls"+rolls.toString());
 
         rolls.removeAll(Collections.singleton(Faces.SKULL));
 
@@ -90,10 +105,8 @@ public class Player {
 
         if (p1.score >= p2.score) {
             p1.wins += 1;
-            System.out.println("Player 1 Wins!");
         } else {
             p2.wins += 1;
-            System.out.println("Player 2 Wins!");
         }
     }
 

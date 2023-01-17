@@ -12,7 +12,7 @@ public class Dice {
     }
 
     public List<Faces> eightRoll(){
-        List<Faces> turn_rolls=new ArrayList<Faces>();
+        List<Faces> turn_rolls=new ArrayList<>();
 
         for (int i=0; i<8; i++){
             turn_rolls.add(roll());
