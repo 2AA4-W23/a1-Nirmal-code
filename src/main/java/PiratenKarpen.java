@@ -26,12 +26,12 @@ public class PiratenKarpen {
 
 
             logger.trace("Player 1 Turn:");
-            p1.score+= p1.turn();
+            p1.score+= p1.turn(true);
             logger.trace("Player 1 turn ended.");
 
 
             logger.trace("Player 2 Turn:");
-            p2.score+= p2.turn();
+            p2.score+= p2.turn(false);
             logger.trace("Player 2 turn ended.");
 
 
@@ -48,7 +48,6 @@ public class PiratenKarpen {
 
         System.out.printf("Player 1 win percentage: %.3f%%\n",(p1.wins/42)*100);
         System.out.printf("Player 2 win percentage: %.3f%%\n", (p2.wins/42)*100);
-
 
 
     }
