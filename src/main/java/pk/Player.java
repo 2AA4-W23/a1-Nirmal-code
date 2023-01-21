@@ -1,12 +1,11 @@
 package pk;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Random;
 
 import java.util.List;
+
 
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
@@ -57,17 +56,13 @@ public class Player {
         num_dice.put(Faces.PARROT, num_parrot);
         num_dice.put(Faces.SABER, num_saber);
 
-
-
-
     }
 
-    int tally_score(){
+
+    private int tally_score(){
 
         dice_frequency();
         int curr_score=0;
-
-
 
         curr_score=((num_dice.get(Faces.DIAMOND)+num_dice.get(Faces.GOLD))*100);
 
@@ -101,45 +96,57 @@ public class Player {
         return curr_score;
     }
 
-    int strat_rerolls(){
-        dice_frequency();
+    private int strat_rerolls(){
+
+
 
         if (8-rolls.size()==2){
             logger.trace("2 Skulls, don't want to risk.");
             return tally_score();
         }else{
-            while (8-rolls.size()<=2){
+            while (8-rolls.size()<2){
+
+                dice_frequency();
                 num_dice.remove(Faces.GOLD);
                 num_dice.remove(Faces.DIAMOND);
-                int min=Collections.min(num_dice.values());
-                int num_min=Collections.frequency(num_dice.values(), min);
-                if (min==1 & num_min>1){
+
+                int num_ones=Collections.frequency(num_dice.values(),1);
+                int num_twos=Collections.frequency(num_dice.values(),2);
+
+                if (num_ones>=2 | num_twos>0){
                     for (int i=0; i<rolls.size(); i++){
                         if (rolls.get(i)!=Faces.DIAMOND & rolls.get(i)!=Faces.GOLD){
-                            if (num_dice.get(rolls.get(i))==min){
+                            if (num_dice.get(rolls.get(i))==1 | num_dice.get(rolls.get(i))==2){
                                 rolls.set(i, myDice.roll());
                             }
                         }
                     }
+
+                    logger.trace("reroll:"+rolls.toString());
+                    rolls.removeAll(Collections.singleton(Faces.SKULL));
                 }else{
                     logger.trace("Most dice have pairs. Don't want to risk.");
-                    break;
+                    return tally_score();
                 }
-                rolls.removeAll(Collections.singleton(Faces.SKULL));
-                dice_frequency();
-                logger.trace("reroll:"+rolls.toString());
+
+            }
+            if (8-rolls.size()>=3){
+                logger.trace("rolled 3 or more dice, no points");
+                return 0;
+            }else{
+                logger.trace("2 skulls, dont want to risk it.");
+                return tally_score();
 
             }
 
         }
 
-        return tally_score();
 
 
 
     }
 
-    int random_rerolls() {
+    private int random_rerolls() {
 
 
         //selects which two die will be rerolled from die left (at minimum).
@@ -188,7 +195,7 @@ public class Player {
         return tally_score();
     }
 
-    public int turn(boolean strat){
+    public int turn(String strat){
 
         //new roll each turn
         rolls =myDice.eightRoll();
@@ -205,7 +212,7 @@ public class Player {
             return 0;
         }else{
             //if less than 3 are skulls, this rerolls.
-            if (strat){
+            if (strat.equals("combo")){
                 curr_score=strat_rerolls();
             }else{
                 curr_score=random_rerolls();
