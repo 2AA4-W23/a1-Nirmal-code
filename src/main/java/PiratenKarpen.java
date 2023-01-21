@@ -1,19 +1,29 @@
 
 import pk.Player;
 
+
+import org.apache.logging.log4j.core.config.Configurator;
 import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
+
 
 
 public class PiratenKarpen {
 
     private static Logger logger=LogManager.getLogger(PiratenKarpen.class);
-
-
+    
 
     public static void main(String[] args) {
         System.out.println("Welcome to Piraten Karpen Simulator!");
         System.out.println("I'm rolling a dice");
+
+
+        if ((System.getProperty("my.trace")=="true")) {
+            Configurator.setRootLevel(Level.ALL);
+        }else if ((System.getProperty("my.trace")==null)){
+            Configurator.setRootLevel(Level.OFF);
+        }
 
         Player p1=new Player();
         Player p2=new Player();
@@ -26,12 +36,12 @@ public class PiratenKarpen {
 
 
             logger.trace("Player 1 Turn:");
-            p1.score+= p1.turn(true);
+            p1.score+= p1.turn(args[0]);
             logger.trace("Player 1 turn ended.");
 
 
             logger.trace("Player 2 Turn:");
-            p2.score+= p2.turn(false);
+            p2.score+= p2.turn(args[1]);
             logger.trace("Player 2 turn ended.");
 
 
