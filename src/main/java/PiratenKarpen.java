@@ -53,6 +53,14 @@ public class PiratenKarpen {
 
         }
 
+        
+        if (p1.getScore()>=6000){
+            logger.trace("Player 2 Redemption:");
+            p2.pTurn(args[1]);
+        }else{
+            logger.trace("Player 1 Redemption:");
+            p1.pTurn(args[0]);
+        }
 
         Player.finalUpdate(p1, p2, num_sim);
 
