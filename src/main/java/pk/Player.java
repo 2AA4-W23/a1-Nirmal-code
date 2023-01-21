@@ -134,6 +134,10 @@ public class Player {
 
     }
 
+    public int getScore(){
+        return total_score;
+    }
+
 
 
 
@@ -152,12 +156,20 @@ public class Player {
 
 
 
-    public static void finalUpdate(Player p1, Player p2){
+    public static void finalUpdate(Player p1, Player p2, int num_sim){
 
-        logger.trace(String.format("Final Wins: Player 1: %.0f, Player 2: %.0f", p1.wins,p2.wins));
+        System.out.printf("Final Scores: \nPlayer 1: %d, Player 2: %d\n", p1.total_score, p2.total_score);
 
-        System.out.printf("Player 1 win percentage: %.3f%%\n",(p1.wins/42)*100);
-        System.out.printf("Player 2 win percentage: %.3f%%\n", (p2.wins/42)*100);
+        if (p1.total_score>p2.total_score){
+            System.out.println("Player 1 Wins!");
+        }else if (p1.total_score<p2.total_score){
+            System.out.println("Player 2 Wins!");
+        }else{
+            System.out.println("Tie Game!");
+        }
+
+        System.out.printf("Player 1 win percentage: %.3f%%\n",(p1.wins/num_sim)*100);
+        System.out.printf("Player 2 win percentage: %.3f%%\n", (p2.wins/num_sim)*100);
     }
 
 }

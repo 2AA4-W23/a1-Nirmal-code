@@ -12,8 +12,7 @@ import org.apache.logging.log4j.core.config.Configurator;
 
 public class PiratenKarpen {
 
-    public static Logger logger=LogManager.getLogger(PiratenKarpen.class);
-    
+    public static Logger logger=LogManager.getLogger(PiratenKarpen.class);    
 
     public static void main(String[] args) {
         
@@ -31,11 +30,12 @@ public class PiratenKarpen {
         Player p1=new Player();
         Player p2=new Player();
 
+        int num_sim=0;
 
 
-        for (int i=0; i<42; i++) {
+        while (p1.getScore()<6000 & p2.getScore()<6000){
 
-            logger.trace(String.format("Round %d:", i+1));
+            logger.trace(String.format("Round %d:", num_sim+1));
 
 
             logger.trace("Player 1 Turn:");
@@ -49,9 +49,12 @@ public class PiratenKarpen {
 
 
             Player.winUpdate(p1,p2);
+            num_sim+=1;
+
         }
 
-        Player.finalUpdate(p1, p2);
+
+        Player.finalUpdate(p1, p2, num_sim);
 
 
     }
