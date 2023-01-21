@@ -2,19 +2,21 @@
 import pk.Player;
 
 
-import org.apache.logging.log4j.core.config.Configurator;
 import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.core.config.Configurator;
+
 
 
 
 public class PiratenKarpen {
 
-    private static Logger logger=LogManager.getLogger(PiratenKarpen.class);
+    public static Logger logger=LogManager.getLogger(PiratenKarpen.class);
     
 
     public static void main(String[] args) {
+        
         System.out.println("Welcome to Piraten Karpen Simulator!");
         System.out.println("I'm rolling a dice");
 
@@ -24,6 +26,7 @@ public class PiratenKarpen {
         }else if ((System.getProperty("my.trace")==null)){
             Configurator.setRootLevel(Level.OFF);
         }
+
 
         Player p1=new Player();
         Player p2=new Player();
@@ -36,28 +39,19 @@ public class PiratenKarpen {
 
 
             logger.trace("Player 1 Turn:");
-            p1.score+= p1.turn(args[0]);
+            p1.pTurn(args[0]);
             logger.trace("Player 1 turn ended.");
 
 
             logger.trace("Player 2 Turn:");
-            p2.score+= p2.turn(args[1]);
+            p2.pTurn(args[1]);
             logger.trace("Player 2 turn ended.");
 
 
-
-            logger.trace(String.format("Player 1: %d", p1.score));
-            logger.trace(String.format("Player 2: %d", p2.score));
-
-            Player.win_update(p1,p2);
-
+            Player.winUpdate(p1,p2);
         }
 
-        logger.trace(String.format("Final Wins: Player 1: %.0f, Player 2: %.0f", p1.wins,p2.wins));
-
-
-        System.out.printf("Player 1 win percentage: %.3f%%\n",(p1.wins/42)*100);
-        System.out.printf("Player 2 win percentage: %.3f%%\n", (p2.wins/42)*100);
+        Player.finalUpdate(p1, p2);
 
 
     }
