@@ -13,51 +13,32 @@ import org.apache.logging.log4j.LogManager;
 public class Player {
 
 
-    Dice myDice=new Dice();
     Random rand=new Random();
 
-    protected static Logger logger=LogManager.getLogger(Player.class);
+    public static Logger logger=LogManager.getLogger(Player.class);
 
     protected static List <Faces> rolls;
     protected static HashMap<Faces, Integer> num_faces=new HashMap<Faces, Integer>();
 
     private double wins;
     private int total_score;
-    protected static int curr_score;
-    protected static int num_skulls;
-
 
 
     public Player(){
-        wins=0;
-        total_score=0;
-        num_skulls=0;
-        curr_score=0;
+        this.wins=0;
+        this.total_score=0;
     }
 
 
-    protected void dice_frequency(){
+    protected int tallyScore(){
 
+        int curr_score=0;
 
+        num_faces=Dice.dice_frequency(rolls);
 
-        int num_gold= Collections.frequency(rolls, Faces.GOLD);
-        int num_diamond= Collections.frequency(rolls, Faces.DIAMOND);
-        int num_monkey= Collections.frequency(rolls, Faces.MONKEY);
-        int num_parrot= Collections.frequency(rolls, Faces.PARROT);
-        int num_saber= Collections.frequency(rolls, Faces.SABER);
-
-        num_faces.put(Faces.GOLD, num_gold);
-        num_faces.put(Faces.DIAMOND, num_diamond);
-        num_faces.put(Faces.MONKEY, num_monkey);
-        num_faces.put(Faces.PARROT, num_parrot);
-        num_faces.put(Faces.SABER, num_saber);
-
-    }
-
-
-    protected void tallyScore(){
-
-        dice_frequency();
+        if (num_faces.get(Faces.SKULL)>=3){
+            return 0;
+        }
 
         curr_score=((num_faces.get(Faces.DIAMOND)+num_faces.get(Faces.GOLD))*100);
 
@@ -83,26 +64,58 @@ public class Player {
                     break;
             }
         }
-
         
         logger.trace("result: "+rolls.toString());
         logger.trace(String.format("Added points:%d", curr_score));
+
+        return curr_score;
     
     }
 
 
 
+    private void Reroll(String strat, int num_skulls) {
 
-
-    private void Reroll(String strat) {
-        Strategy rando=new Strategy();
+        Strategy p_strategy=new Strategy();
 
         if (strat.equals("random")){
-            rando.randomReroll();
-            tallyScore();
-        }else{
-            rando.stratReroll();
-            tallyScore();
+
+            boolean cont=rand.nextBoolean();
+            logger.trace("Player decides to reroll: "+cont);
+
+            while (cont) {
+                p_strategy.randomReroll(rolls);
+                num_skulls=Collections.frequency(rolls, Faces.SKULL);
+                
+                if (num_skulls<3){
+                    cont=rand.nextBoolean();
+                    logger.trace("Player decides to reroll: "+cont);
+                }else{
+                    logger.trace("More than 3 Skulls, no point!");
+                    break;
+                }
+                
+            }
+            if (num_skulls<3){
+                total_score+=tallyScore();
+            }
+            
+        }else if (strat.equals("combo")){
+
+            boolean cont=true;
+
+            while (num_skulls<2 & cont){
+                num_faces=Dice.dice_frequency(rolls);
+                cont=p_strategy.stratReroll(rolls,num_faces);
+                num_skulls=Collections.frequency(rolls, Faces.SKULL);
+            }
+
+            if (num_skulls>=3){
+                logger.trace("rolled 3 or more dice, no points");
+            }else{
+                logger.trace("2 skulls, don't want to risk it");
+                total_score+=tallyScore();
+            }
         }
     }
 
@@ -111,27 +124,18 @@ public class Player {
     public void pTurn(String strat){
 
         //new roll each turn
-        rolls =myDice.eightRoll();
+        rolls =Dice.eightRoll();
 
         logger.trace("Player Initial Roll: "+rolls.toString());
 
-        num_skulls+=Collections.frequency(rolls, Faces.SKULL);
-
-
-        rolls.removeAll(Collections.singleton(Faces.SKULL));
-
+        int num_skulls=Collections.frequency(rolls, Faces.SKULL);
 
         //checks if 3 die or more are not already skulls.
         if (num_skulls>=3){
             logger.trace("No points, more than 3 skulls. ");
         }else{
-            Reroll(strat);
-            total_score+=curr_score;
-            curr_score=0;
+            Reroll(strat, num_skulls);
         }
-
-        num_skulls=0;
-
     }
 
     public int getScore(){
@@ -139,16 +143,14 @@ public class Player {
     }
 
 
-
-
     public static void winUpdate(Player p1, Player p2){
 
         logger.trace(String.format("Player 1: %d", p1.total_score));
         logger.trace(String.format("Player 2: %d", p2.total_score));
 
-        if (p1.total_score >= p2.total_score) {
+        if (p1.total_score > p2.total_score) {
             p1.wins += 1;
-        } else {
+        } else if (p1.total_score < p2.total_score) {
             p2.wins += 1;
         }
 
