@@ -13,16 +13,17 @@ import org.apache.logging.log4j.LogManager;
 public class Player {
 
 
-    Random rand=new Random();
+    static Random rand=new Random();
 
     public static Logger logger=LogManager.getLogger(Player.class);
 
     protected static List <Faces> rolls;
-    protected static HashMap<Faces, Integer> num_faces=new HashMap<Faces, Integer>();
+    private HashMap<Faces, Integer> num_faces;
 
     private double wins;
     private int total_score;
 
+    public StrategyList p_strat;
 
     public Player(){
         this.wins=0;
@@ -30,17 +31,32 @@ public class Player {
     }
 
 
-    protected int tallyScore(){
+    public Player(String strat){
+        if (strat.equals("random")){
+            p_strat=StrategyList.RANDOM;
+        }else if (strat.equals("combo")){
+            p_strat=StrategyList.COMBO;
+        }
+    }
+
+
+    protected int tallyScore(Card card){
 
         int curr_score=0;
 
         num_faces=Dice.dice_frequency(rolls);
 
+        curr_score=((num_faces.get(Faces.DIAMOND)+num_faces.get(Faces.GOLD))*100);
+
         if (num_faces.get(Faces.SKULL)>=3){
             return 0;
         }
 
-        curr_score=((num_faces.get(Faces.DIAMOND)+num_faces.get(Faces.GOLD))*100);
+        if (card.getType()==CardTypes.SeaBattle & num_faces.get(Faces.SABER)>=card.getVal()){
+            curr_score+=card.getPoints();
+        }else if (card.getType()==CardTypes.SeaBattle){
+            return 0;
+        }
 
         for (int i:num_faces.values()){
             switch(i){
@@ -74,56 +90,60 @@ public class Player {
 
 
 
-    private void Reroll(String strat, int num_skulls) {
+    private void Reroll(Card card, int num_skulls) {
 
-        Strategy p_strategy=new Strategy();
 
-        if (strat.equals("random")){
+        boolean cont=true;
+        int max=3;
 
-            boolean cont=rand.nextBoolean();
-            logger.trace("Player decides to reroll: "+cont);
+        switch(p_strat){
+            case RANDOM:
+                cont=rand.nextBoolean();
+                max=3;
+                break;
+            case COMBO:
+                cont=true;
+                max=2;
+                break;
+        }
 
-            while (cont) {
-                p_strategy.randomReroll(rolls);
-                num_skulls=Collections.frequency(rolls, Faces.SKULL);
-                
-                if (num_skulls<3){
-                    cont=rand.nextBoolean();
-                    logger.trace("Player decides to reroll: "+cont);
+        while (cont & num_skulls<max){
+            num_faces=Dice.dice_frequency(rolls);
+
+            if (p_strat==StrategyList.RANDOM){
+
+                Strategy.randomReroll(rolls);
+                cont=rand.nextBoolean();
+
+            }else if (p_strat==StrategyList.COMBO){
+
+                if (card.getType()==CardTypes.SeaBattle){
+                    cont=Strategy.battleReroll(rolls,num_faces,card);
                 }else{
-                    logger.trace("More than 3 Skulls, no point!");
-                    break;
+                    cont=Strategy.stratReroll(rolls,num_faces);
                 }
-                
-            }
-            if (num_skulls<3){
-                total_score+=tallyScore();
             }
             
-        }else if (strat.equals("combo")){
-
-            boolean cont=true;
-
-            while (num_skulls<2 & cont){
-                num_faces=Dice.dice_frequency(rolls);
-                cont=p_strategy.stratReroll(rolls,num_faces);
-                num_skulls=Collections.frequency(rolls, Faces.SKULL);
-            }
-
-            if (num_skulls>=3){
-                logger.trace("rolled 3 or more dice, no points");
-            }else{
-                logger.trace("2 skulls, don't want to risk it");
-                total_score+=tallyScore();
-            }
+            num_skulls=Collections.frequency(rolls, Faces.SKULL);
         }
+
+        if (num_skulls<3){
+            logger.trace("Player decides to reroll: false");
+            int added_score=tallyScore(card);
+            total_score+=added_score;
+        }else{
+            logger.trace("3 or more skulls, 0 points, end turn.");
+        }
+
     }
 
 
 
-    public void pTurn(String strat){
+    public void pTurn(Card card){
 
         //new roll each turn
+
+        logger.trace("Player Draws Card: "+card.getType()+card.getVal());
         rolls =Dice.eightRoll();
 
         logger.trace("Player Initial Roll: "+rolls.toString());
@@ -134,7 +154,7 @@ public class Player {
         if (num_skulls>=3){
             logger.trace("No points, more than 3 skulls. ");
         }else{
-            Reroll(strat, num_skulls);
+            Reroll(card, num_skulls);
         }
     }
 
