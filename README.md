@@ -46,9 +46,9 @@ Remark: **We are assuming here you are using a _real_ shell (e.g., anything but 
 | x   | F07 | Output percentage of wins for the 2 players  |  D  | 01/12/23  | 01/12/23 |
 | x   | F08 | end of game with three cranes | D | 01/12/23 | 01/12/23 |
 | x   | F09 | Score points: pairs of 3 dies | D | 01/12/23 | 01/13/23 |
-|     | F10 | Score points: pairs of 4,5,6,7,8 dies (Priority 1) | D | 01/17/23 |  |
-|     | F11 | Strategy to maximize combos when picking dies (Priortiy 3) | D | 01/17/23 |  |
-|     | F12 | Specify command line arg which strategy to use. (Priority 4) | D | 01/19/23 | 01/20/23 |
+|     | F10 | Score points: pairs of 4,5,6,7,8 dies. | D | 01/17/23 |  |
+|     | F11 | Strategy to maximize combos when picking dies. | D | 01/17/23 |  |
+|     | F12 | Specify command line arg which strategy to use. | D | 01/19/23 | 01/20/23 |
 |     | F13 | Player recieves 0 points on 3 skulls | D | 01/18/23 | 01/18/23 |
 |     | F14 | Players continue playing until someone reaches 6000 points | D | 01/21/23 | 01/21/23 |
 |     | F15 | When player reaches 6000, other player gets 1 turn for redemption | D | 01/21/23 | 01/21/23 |
@@ -57,7 +57,7 @@ Remark: **We are assuming here you are using a _real_ shell (e.g., anything but 
 |     | F18 | Card deck with 35 cards total, 6 sea battle and 29 blank | D | 01/24/23 | 01/24/23 |
 |     | F19 | Card deck pick card feature that picks a card from deck.. | D | 01/24/23 | 01/24/23 |
 |     | F20 | Card deck shuffle feature that shuffles the deck of cards. | D | 01/24/23 | 01/24/23 |
-
 |     | F21 | New Strategy for Sea Battle. | D | 01/25/23 | 01/25/23 |
-
+|     | F22 | New Card: Monkey Business, 4 in deck. | D | 01/25/23 | 01/25/23 |
+|     | F23 | New monkey business strategy | D | 01/25/23 | 01/25/23 |
 | ... | ... | ... |

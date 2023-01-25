@@ -1,8 +1,6 @@
 
 import pk.CardDeck;
 import pk.Player;
-import pk.Strategy;
-import pk.StrategyList;
 
 
 import org.apache.logging.log4j.Logger;

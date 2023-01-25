@@ -56,6 +56,11 @@ public class Player {
             curr_score+=card.getPoints();
         }else if (card.getType()==CardTypes.SeaBattle){
             return 0;
+        }else if (card.getType()==CardTypes.MonkeyBusiness){
+            int num_monkey=num_faces.get(Faces.MONKEY);
+            int num_parrot=num_faces.get(Faces.PARROT);
+            num_faces.put(Faces.PARROT, num_monkey+num_parrot);
+            num_faces.put(Faces.MONKEY, 0);
         }
 
         for (int i:num_faces.values()){
@@ -119,6 +124,8 @@ public class Player {
 
                 if (card.getType()==CardTypes.SeaBattle){
                     cont=Strategy.battleReroll(rolls,num_faces,card);
+                }else if (card.getType()==CardTypes.MonkeyBusiness){
+                    cont=Strategy.parrmonkReroll(rolls,num_faces,card);
                 }else{
                     cont=Strategy.stratReroll(rolls,num_faces);
                 }

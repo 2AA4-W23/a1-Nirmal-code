@@ -98,6 +98,31 @@ public class Strategy extends Player {
 
     }
 
+    protected static boolean parrmonkReroll(List<Faces> rolls, HashMap<Faces, Integer> num_faces, Card card){
+
+        int num_saber=num_faces.get(Faces.SABER);
+
+        if (num_saber>=2){
+            logger.trace("Player decides to reroll:true");
+
+            for (int i=0; i<rolls.size(); i++){
+
+                if (rolls.get(i)==Faces.SABER){
+                    rolls.set(i, Dice.roll());
+                }
+
+            }
+            logger.trace("reroll:"+rolls.toString());
+
+            return true;
+
+        }else{
+            return false;
+
+        }
+
+    }
+
     
 
 

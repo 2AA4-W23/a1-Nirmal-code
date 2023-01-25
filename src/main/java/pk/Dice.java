@@ -48,9 +48,6 @@ public class Dice{
         return turn_rolls;
 
     }
-
-
-
     
     
 }
