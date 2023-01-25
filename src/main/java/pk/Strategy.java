@@ -9,7 +9,7 @@ public class Strategy extends Player {
 
 
 
-    protected boolean stratReroll(List<Faces> rolls, HashMap<Faces, Integer> num_faces){
+    protected static boolean stratReroll(List<Faces> rolls, HashMap<Faces, Integer> num_faces){
 
         num_faces.remove(Faces.GOLD);
         num_faces.remove(Faces.DIAMOND);
@@ -20,6 +20,7 @@ public class Strategy extends Player {
         int num_twos=Collections.frequency(num_faces.values(),2);
 
         if (num_ones>=2 | num_twos>0){
+            logger.trace("Player decides to reroll:true");
 
             for (int i=0; i<rolls.size(); i++){
 
@@ -32,27 +33,80 @@ public class Strategy extends Player {
                 }
 
             }
-
             logger.trace("reroll:"+rolls.toString());
 
-        }else{
+            return true;
 
-            logger.trace("Most dice have pairs. Don't want to risk.");
+        }else{
             {return false;}
 
         }
 
-        return true;
+    }
+
+    protected static boolean battleReroll(List<Faces> rolls, HashMap<Faces, Integer> num_faces, Card card){
+
+
+        int num_saber=num_faces.get(Faces.SABER);
+        num_faces.remove(Faces.SKULL);
+
+        boolean got_req=num_saber>=card.getVal();
+
+        if (got_req){
+            num_faces.remove(Faces.SABER);
+            num_faces.remove(Faces.GOLD);
+            num_faces.remove(Faces.DIAMOND);
+            num_faces.remove(Faces.SKULL);
+    
+    
+            int num_ones=Collections.frequency(num_faces.values(),1);
+            int num_twos=Collections.frequency(num_faces.values(),2);
+    
+            if (num_ones>=2 | num_twos>0){
+                logger.trace("Player decides to reroll:true");
+    
+                for (int i=0; i<rolls.size(); i++){
+    
+                    if (rolls.get(i)!=Faces.DIAMOND & rolls.get(i)!=Faces.GOLD & rolls.get(i)!=Faces.SKULL & rolls.get(i)!=Faces.SABER){
+    
+                        if (num_faces.get(rolls.get(i))==1 | num_faces.get(rolls.get(i))==2){
+                            rolls.set(i, Dice.roll());
+                        }
+    
+                    }
+                }
+                logger.trace("reroll:"+rolls.toString());
+    
+                return true;
+    
+            }else{    
+                return false;
+    
+            }
+
+
+        }else{
+            logger.trace("Player decides to reroll:true");
+            for (int i=0; i<rolls.size(); i++){
+                if (rolls.get(i)!=Faces.SABER & rolls.get(i)!=Faces.SKULL){
+                    rolls.set(i, Dice.roll());
+                }
+            }
+            logger.trace("reroll:"+rolls.toString());
+            return true;
+        }
 
     }
 
     
 
 
-    protected void randomReroll(List<Faces> rolls){
+    protected static void randomReroll(List<Faces> rolls){
 
 
         //selects which two die will be rerolled. Cannot be the same die, and cannot be skulls.
+
+        logger.trace("Player decides to reroll: true");
 
         int fixed_one=rand.nextInt(0, rolls.size());
         int fixed_two=rand.nextInt(0, rolls.size());
@@ -88,3 +142,4 @@ public class Strategy extends Player {
         logger.trace("reroll:"+rolls.toString());
     }
 }
+
