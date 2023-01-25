@@ -12,7 +12,7 @@ public class CardDeck extends Card {
 
     public CardDeck(){
 
-        for (int i=0; i<29; i++){
+        for (int i=0; i<25; i++){
             deck.add(new Card(CardTypes.Unknown, CardValues.NONE, 0));
         }
 
@@ -22,6 +22,11 @@ public class CardDeck extends Card {
         deck.add(new Card(CardTypes.SeaBattle, CardValues.THREE,500));
         deck.add(new Card(CardTypes.SeaBattle, CardValues.FOUR,1000));
         deck.add(new Card(CardTypes.SeaBattle, CardValues.FOUR,1000));
+
+        deck.add(new Card(CardTypes.MonkeyBusiness, CardValues.NONE, 0));
+        deck.add(new Card(CardTypes.MonkeyBusiness, CardValues.NONE, 0));
+        deck.add(new Card(CardTypes.MonkeyBusiness, CardValues.NONE, 0));
+        deck.add(new Card(CardTypes.MonkeyBusiness, CardValues.NONE, 0));
     }
 
     public Card pickCard(){
