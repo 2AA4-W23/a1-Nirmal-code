@@ -30,6 +30,11 @@ public class CardDeck extends Card {
         return card;
     }
 
+    public void shuffle(){
+        List<Card> list=new ArrayList<Card>(deck);
+        Collections.shuffle(list);
+        deck=new ArrayDeque<Card>(list);
+    }
 
     public int Size(){
         return deck.size();
