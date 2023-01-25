@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
-public class Dice extends Player{
+public class Dice{
     
 
     static protected Faces roll() {
@@ -14,7 +14,9 @@ public class Dice extends Player{
         return Faces.values()[bag.nextInt(howManyFaces)];
     }
 
-    static protected HashMap<Faces, Integer> dice_frequency(List<Faces> rolls){
+    protected static HashMap<Faces, Integer> dice_frequency(List<Faces> rolls){
+        HashMap<Faces, Integer> num_faces=new HashMap<Faces, Integer>();
+
         int num_gold= Collections.frequency(rolls, Faces.GOLD);
         int num_diamond= Collections.frequency(rolls, Faces.DIAMOND);
         int num_monkey= Collections.frequency(rolls, Faces.MONKEY);
