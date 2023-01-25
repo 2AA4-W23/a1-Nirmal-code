@@ -24,4 +24,14 @@ public class CardDeck extends Card {
         deck.add(new Card(CardTypes.SeaBattle, CardValues.FOUR,1000));
     }
 
+    public Card pickCard(){
+        Card card=deck.remove();
+        deck.add(card);
+        return card;
+    }
+
+
+    public int Size(){
+        return deck.size();
+    }
 }
