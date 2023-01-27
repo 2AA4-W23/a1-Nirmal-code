@@ -20,11 +20,11 @@ public class Player {
     protected static List <Faces> rolls;
     private HashMap<Faces, Integer> num_faces;
 
-    private double wins;
+    private int wins;
     private int total_score;
     private int curr_score;
 
-    public StrategyList p_strat;
+    private StrategyList p_strat;
 
     public Player(){
         this.wins=0;
@@ -193,24 +193,20 @@ public class Player {
 
     }
 
-
-
-    public static void finalUpdate(Player p1, Player p2, int num_sim){
-
-        System.out.printf("Final Scores: \nPlayer 1: %d, Player 2: %d\n", p1.total_score, p2.total_score);
-
-        if (p1.total_score>p2.total_score){
-            System.out.println("Player 1 Wins!");
-        }else if (p1.total_score<p2.total_score){
-            System.out.println("Player 2 Wins!");
-        }else{
-            System.out.println("Tie Game!");
-        }
-
-        System.out.printf("Player 1 win percentage: %.3f%%\n",(p1.wins/num_sim)*100);
-        System.out.printf("Player 2 win percentage: %.3f%%\n", (p2.wins/num_sim)*100);
-        System.out.printf("Tie percentage: %.3f%%\n", ((num_sim-(p1.wins+p2.wins))/num_sim)*100);
-
+    public int getCurrScore(){
+        return this.curr_score;
     }
+
+    public int getFinalPoints(){
+        return this.total_score;
+    }
+
+    public int getWins(){
+        return this.wins;
+    }
+
+
+
+
 
 }
