@@ -22,12 +22,14 @@ public class Player {
 
     private double wins;
     private int total_score;
+    private int curr_score;
 
     public StrategyList p_strat;
 
     public Player(){
         this.wins=0;
         this.total_score=0;
+        this.curr_score=0;
     }
 
 
@@ -42,20 +44,24 @@ public class Player {
 
     protected int tallyScore(Card card){
 
-        int curr_score=0;
+        curr_score=0;
 
         num_faces=Dice.dice_frequency(rolls);
 
         curr_score=((num_faces.get(Faces.DIAMOND)+num_faces.get(Faces.GOLD))*100);
 
-        if (num_faces.get(Faces.SKULL)>=3){
-            return 0;
-        }
 
-        if (card.getType()==CardTypes.SeaBattle & num_faces.get(Faces.SABER)>=card.getVal()){
-            curr_score+=card.getPoints();
-        }else if (card.getType()==CardTypes.SeaBattle){
-            return 0;
+        if (card.getType()==CardTypes.SeaBattle){
+            if (num_faces.get(Faces.SABER)>=card.getVal() & num_faces.get(Faces.SKULL)<3){
+                curr_score+=card.getPoints();
+            }else if (num_faces.get(Faces.SABER)>=card.getVal()){
+                curr_score=0;
+                return curr_score;
+            }else{
+                logger.trace("Deducted points: "+card.getPoints());
+                curr_score=-1*card.getPoints();
+                return (curr_score);
+            }
         }else if (card.getType()==CardTypes.MonkeyBusiness){
             int num_monkey=num_faces.get(Faces.MONKEY);
             int num_parrot=num_faces.get(Faces.PARROT);
@@ -63,7 +69,9 @@ public class Player {
             num_faces.put(Faces.MONKEY, 0);
         }
 
+
         for (int i:num_faces.values()){
+
             switch(i){
                 case 3:
                     curr_score+=100;
@@ -84,6 +92,7 @@ public class Player {
                     curr_score+=4000;
                     break;
             }
+            
         }
         
         logger.trace("result: "+rolls.toString());
@@ -139,7 +148,12 @@ public class Player {
             int added_score=tallyScore(card);
             total_score+=added_score;
         }else{
-            logger.trace("3 or more skulls, 0 points, end turn.");
+            if (card.getType()==CardTypes.SeaBattle){
+                int sub_score=tallyScore(card);
+                total_score+=sub_score;
+            }else{
+                logger.trace("3 or more skulls, 0 points, end turn.");
+            }
         }
 
     }
@@ -157,12 +171,8 @@ public class Player {
 
         int num_skulls=Collections.frequency(rolls, Faces.SKULL);
 
-        //checks if 3 die or more are not already skulls.
-        if (num_skulls>=3){
-            logger.trace("No points, more than 3 skulls. ");
-        }else{
-            Reroll(card, num_skulls);
-        }
+        Reroll(card, num_skulls);
+
     }
 
     public int getScore(){
@@ -175,9 +185,9 @@ public class Player {
         logger.trace(String.format("Player 1: %d", p1.total_score));
         logger.trace(String.format("Player 2: %d", p2.total_score));
 
-        if (p1.total_score > p2.total_score) {
+        if (p1.curr_score > p2.curr_score) {
             p1.wins += 1;
-        } else if (p1.total_score < p2.total_score) {
+        } else if (p1.curr_score < p2.curr_score) {
             p2.wins += 1;
         }
 
@@ -199,6 +209,8 @@ public class Player {
 
         System.out.printf("Player 1 win percentage: %.3f%%\n",(p1.wins/num_sim)*100);
         System.out.printf("Player 2 win percentage: %.3f%%\n", (p2.wins/num_sim)*100);
+        System.out.printf("Tie percentage: %.3f%%\n", ((num_sim-(p1.wins+p2.wins))/num_sim)*100);
+
     }
 
 }
