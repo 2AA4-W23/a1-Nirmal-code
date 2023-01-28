@@ -12,8 +12,8 @@ public class CardDeck extends Card {
 
     public CardDeck(){
 
-        for (int i=0; i<25; i++){
-            deck.add(new Card(CardTypes.Unknown, CardValues.NONE, 0));
+        for (int i=0; i<21; i++){
+            deck.add(new Card(CardTypes.Empty, CardValues.NONE, 0));
         }
 
         deck.add(new Card(CardTypes.SeaBattle, CardValues.TWO, 300));
@@ -27,6 +27,11 @@ public class CardDeck extends Card {
         deck.add(new Card(CardTypes.MonkeyBusiness, CardValues.NONE, 0));
         deck.add(new Card(CardTypes.MonkeyBusiness, CardValues.NONE, 0));
         deck.add(new Card(CardTypes.MonkeyBusiness, CardValues.NONE, 0));
+
+        deck.add(new Card(CardTypes.Sorceress, CardValues.NONE, 0));
+        deck.add(new Card(CardTypes.Sorceress, CardValues.NONE, 0));
+        deck.add(new Card(CardTypes.Sorceress, CardValues.NONE, 0));
+        deck.add(new Card(CardTypes.Sorceress, CardValues.NONE, 0));
     }
 
     public Card pickCard(){
