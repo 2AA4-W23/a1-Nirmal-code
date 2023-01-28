@@ -10,6 +10,8 @@ import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 
 
+
+
 public class Player {
 
 
@@ -26,23 +28,42 @@ public class Player {
 
     private StrategyList p_strat;
 
+
+
+
     public Player(){
+
         this.wins=0;
         this.total_score=0;
         this.curr_score=0;
+
     }
+
+
+
 
 
     public Player(String strat){
+
+
         if (strat.equals("random")){
+
             p_strat=StrategyList.RANDOM;
+
         }else if (strat.equals("combo")){
+
             p_strat=StrategyList.COMBO;
         }
+
+
     }
 
 
+
+
+
     protected int tallyScore(Card card){
+
 
         curr_score=0;
 
@@ -52,22 +73,36 @@ public class Player {
 
 
         if (card.getType()==CardTypes.SeaBattle){
+
+
             if (num_faces.get(Faces.SABER)>=card.getVal() & num_faces.get(Faces.SKULL)<3){
+
                 curr_score+=card.getPoints();
+
             }else if (num_faces.get(Faces.SABER)>=card.getVal()){
+
                 curr_score=0;
                 return curr_score;
+
             }else{
+                
                 logger.trace("Deducted points: "+card.getPoints());
                 curr_score=-1*card.getPoints();
                 return (curr_score);
+
             }
+
+
         }else if (card.getType()==CardTypes.MonkeyBusiness){
+
             int num_monkey=num_faces.get(Faces.MONKEY);
             int num_parrot=num_faces.get(Faces.PARROT);
             num_faces.put(Faces.PARROT, num_monkey+num_parrot);
             num_faces.put(Faces.MONKEY, 0);
+
+
         }
+
 
 
         for (int i:num_faces.values()){
@@ -99,8 +134,12 @@ public class Player {
         logger.trace(String.format("Added points:%d", curr_score));
 
         return curr_score;
+
+
     
     }
+
+
 
 
 
@@ -116,12 +155,22 @@ public class Player {
                 max=3;
                 break;
             case COMBO:
-                cont=true;
-                max=2;
+                if (card.getType()==CardTypes.Sorceress){
+                    max=4;
+                    cont=true;
+                }else{
+                    cont=true;
+                    max=2;
+                }
                 break;
         }
 
+
+
+        boolean skull_reroll=false;
+
         while (cont & num_skulls<max){
+            
             num_faces=Dice.dice_frequency(rolls);
 
             if (p_strat==StrategyList.RANDOM){
@@ -132,31 +181,54 @@ public class Player {
             }else if (p_strat==StrategyList.COMBO){
 
                 if (card.getType()==CardTypes.SeaBattle){
+
                     cont=Strategy.battleReroll(rolls,num_faces,card);
+
                 }else if (card.getType()==CardTypes.MonkeyBusiness){
+
                     cont=Strategy.parrmonkReroll(rolls,num_faces,card);
+
+                }else if (card.getType()==CardTypes.Sorceress){
+
+                    max=2;
+                    if (skull_reroll | num_skulls==0){
+                        cont=Strategy.stratReroll(rolls, num_faces, CardTypes.Empty);
+                    }else{
+                        cont=Strategy.stratReroll(rolls,num_faces,card.getType());
+                        skull_reroll=true;
+                    }
+
                 }else{
-                    cont=Strategy.stratReroll(rolls,num_faces);
+
+                    cont=Strategy.stratReroll(rolls, num_faces, card.getType());
+
                 }
             }
             
             num_skulls=Collections.frequency(rolls, Faces.SKULL);
         }
 
+
         if (num_skulls<3){
+
             logger.trace("Player decides to reroll: false");
             int added_score=tallyScore(card);
             total_score+=added_score;
+
         }else{
+
             if (card.getType()==CardTypes.SeaBattle){
                 int sub_score=tallyScore(card);
                 total_score+=sub_score;
             }else{
                 logger.trace("3 or more skulls, 0 points, end turn.");
             }
+
         }
 
     }
+
+
 
 
 
@@ -175,9 +247,14 @@ public class Player {
 
     }
 
+
+
+
     public int getScore(){
         return total_score;
     }
+
+
 
 
     public static void winUpdate(Player p1, Player p2){
@@ -193,13 +270,19 @@ public class Player {
 
     }
 
+
+
     public int getCurrScore(){
         return this.curr_score;
     }
 
+
+
     public int getFinalPoints(){
         return this.total_score;
     }
+
+
 
     public int getWins(){
         return this.wins;

@@ -9,11 +9,23 @@ public class Strategy extends Player {
 
 
 
-    protected static boolean stratReroll(List<Faces> rolls, HashMap<Faces, Integer> num_faces){
+    protected static boolean stratReroll(List<Faces> rolls, HashMap<Faces, Integer> num_faces, CardTypes card){
 
         num_faces.remove(Faces.GOLD);
         num_faces.remove(Faces.DIAMOND);
-        num_faces.remove(Faces.SKULL);
+
+        Boolean battle=false;
+        Boolean sorc=false;
+
+        if (card==CardTypes.SeaBattle){
+            num_faces.remove(Faces.SABER);
+            num_faces.remove(Faces.SKULL);
+            battle=true;
+        }else if (card==CardTypes.Sorceress){
+            sorc=true;
+        }else{
+            num_faces.remove(Faces.SKULL);
+        }
 
 
         int num_ones=Collections.frequency(num_faces.values(),1);
@@ -24,12 +36,17 @@ public class Strategy extends Player {
 
             for (int i=0; i<rolls.size(); i++){
 
-                if (rolls.get(i)!=Faces.DIAMOND & rolls.get(i)!=Faces.GOLD & rolls.get(i)!=Faces.SKULL){
+                if (rolls.get(i)==Faces.SKULL){
+                    if (sorc){
+                        logger.trace("Player decides to use sorceress card");
+                        rolls.set(i, Dice.roll());
+                        sorc=false;
+                    }
 
+                }else if (rolls.get(i)!=Faces.DIAMOND & rolls.get(i)!=Faces.GOLD & (battle?rolls.get(i)!=Faces.SABER:true)){
                     if (num_faces.get(rolls.get(i))==1 | num_faces.get(rolls.get(i))==2){
                         rolls.set(i, Dice.roll());
                     }
-
                 }
 
             }
@@ -53,38 +70,7 @@ public class Strategy extends Player {
         boolean got_req=num_saber>=card.getVal();
 
         if (got_req){
-            num_faces.remove(Faces.SABER);
-            num_faces.remove(Faces.GOLD);
-            num_faces.remove(Faces.DIAMOND);
-            num_faces.remove(Faces.SKULL);
-    
-    
-            int num_ones=Collections.frequency(num_faces.values(),1);
-            int num_twos=Collections.frequency(num_faces.values(),2);
-    
-            if (num_ones>=2 | num_twos>0){
-                logger.trace("Player decides to reroll:true");
-    
-                for (int i=0; i<rolls.size(); i++){
-    
-                    if (rolls.get(i)!=Faces.DIAMOND & rolls.get(i)!=Faces.GOLD & rolls.get(i)!=Faces.SKULL & rolls.get(i)!=Faces.SABER){
-    
-                        if (num_faces.get(rolls.get(i))==1 | num_faces.get(rolls.get(i))==2){
-                            rolls.set(i, Dice.roll());
-                        }
-    
-                    }
-                }
-                logger.trace("reroll:"+rolls.toString());
-    
-                return true;
-    
-            }else{    
-                return false;
-    
-            }
-
-
+            return stratReroll(rolls, num_faces, card.getType());
         }else{
             logger.trace("Player decides to reroll:true");
             for (int i=0; i<rolls.size(); i++){
@@ -97,6 +83,8 @@ public class Strategy extends Player {
         }
 
     }
+
+
 
     protected static boolean parrmonkReroll(List<Faces> rolls, HashMap<Faces, Integer> num_faces, Card card){
 
