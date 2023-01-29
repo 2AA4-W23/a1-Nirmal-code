@@ -61,6 +61,11 @@ public class Strategy extends Player {
 
     }
 
+
+
+
+
+
     protected static boolean battleReroll(List<Faces> rolls, HashMap<Faces, Integer> num_faces, Card card){
 
 
@@ -83,6 +88,8 @@ public class Strategy extends Player {
         }
 
     }
+
+
 
 
 
@@ -113,6 +120,8 @@ public class Strategy extends Player {
 
     
 
+
+    
 
     protected static void randomReroll(List<Faces> rolls){
 

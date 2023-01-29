@@ -60,4 +60,6 @@ Remark: **We are assuming here you are using a _real_ shell (e.g., anything but 
 |     | F21 | New Strategy for Sea Battle. | D | 01/25/23 | 01/25/23 |
 |     | F22 | New Card: Monkey Business, 4 in deck. | D | 01/25/23 | 01/25/23 |
 |     | F23 | New monkey business strategy | D | 01/25/23 | 01/25/23 |
+|     | F24 | New Card: Sorceress Card, 4 in deck | D | 01/28/23 | 01/28/23 |
+|     | F25 | New Sorceress Strategy| D | 01/28/23 | 01/28/23 |
 | ... | ... | ... |
