@@ -93,7 +93,7 @@ public class Game {
 
         if (p1_score>p2_score){
             System.out.println("Player 1 Wins!");
-        }else if (p1_score>p2_score){
+        }else if (p1_score<p2_score){
             System.out.println("Player 2 Wins!");
         }else{
             System.out.println("Tie Game!");
