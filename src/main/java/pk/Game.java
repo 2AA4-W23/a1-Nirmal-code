@@ -9,6 +9,7 @@ public class Game {
     Player p2;
     CardDeck deck;
 
+    //counts the number of simulations that take place in game.
     int num_sim;
     
 
@@ -23,6 +24,7 @@ public class Game {
 
         deck=new CardDeck();
 
+        //shuffle card at beginning of each game.
         deck.shuffle();
 
         num_sim=0;
@@ -31,16 +33,20 @@ public class Game {
 
             logger.trace(String.format("Round %d:", num_sim+1));
 
+
+            //runs the simulation for each player's turn.
             Sim();
 
             num_sim+=1;
 
+            //shuffles the deck if all cards are used.
             if (num_sim%35==0){
                 deck.shuffle();
             }
 
         }
 
+        //Redemption feature for player with lesser points.
         Redemption();
 
     }
@@ -49,6 +55,8 @@ public class Game {
 
 
         logger.trace("Player 1 Turn:");
+        
+        //Player picks a card each turn.
         p1.pTurn(deck.pickCard());
         logger.trace("Player 1 turn ended.");
 
@@ -57,12 +65,13 @@ public class Game {
         p2.pTurn(deck.pickCard());
         logger.trace("Player 2 turn ended.");
 
-
+        //Updates who won each turn.
         Player.winUpdate(p1,p2);
 
     }
 
     public void Redemption(){
+        //Player 1 gets redemption if Player 2 has more points and vice versa.
         if (p1.getScore()>=6000){
             logger.trace("Player 2 Redemption:");
             p2.pTurn(deck.pickCard());

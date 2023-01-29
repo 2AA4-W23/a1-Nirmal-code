@@ -20,6 +20,9 @@
   * To run with program with logging with required arguments:
     * `mvn -q exec:java -Dmy.trace="true" -Dexec.args="random combo"`
 
+## ASSUMPTIONS:
+ * Player can get negative points. From how the game is played, it wouldn't make sense for player not to lose points if at 0. 
+
 
 Remark: **We are assuming here you are using a _real_ shell (e.g., anything but PowerShell on Windows)**
 

@@ -15,6 +15,9 @@ public class Dice{
     }
 
     protected static HashMap<Faces, Integer> dice_frequency(List<Faces> rolls){
+
+        //Calculates how many of each die there are. Returns in hashmap as num_faces to where its called.
+
         HashMap<Faces, Integer> num_faces=new HashMap<Faces, Integer>();
 
         int num_gold= Collections.frequency(rolls, Faces.GOLD);

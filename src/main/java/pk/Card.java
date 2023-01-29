@@ -1,6 +1,8 @@
 package pk;
 
 public class Card {
+
+    //Each card has type, val and point attribute.
     private CardTypes type;
     private CardValues val;
     private int points;
@@ -10,12 +12,14 @@ public class Card {
     }
 
     public Card(CardTypes t, CardValues v, int p){
+        //Each creation of card requires type, val and points.
         this.type=t;
         this.val=v;
         this.points=p;
     }
 
     public int getVal(){
+        //Returns numerical value for each card.
         if (this.val==CardValues.ONE){
             return 1;
         }else if (this.val==CardValues.TWO){
